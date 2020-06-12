@@ -96,3 +96,24 @@ cm = confusion_matrix(y_test, y_pred)
 print(cm)
 accuracy = accuracy_score(y_test, y_pred)
 print(accuracy)
+
+#Creating Ensemble modeling using results from SVM and NaiveBayes
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import accuracy_score, f1_score, recall_score
+ensemble = VotingClassifier(estimators=[('SVM', classifier_SVM),('NaiveBayes', classifier)],
+                       voting='soft', weights=[2,1]).fit(X_train,y_train)
+
+ensemble.fit(X_train, y_train)
+y_pred = ensemble.predict(X_test)
+
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix Ensemble" + str(cm))
+#Checking accuracy
+res_accuracy = accuracy_score(y_test, y_pred)
+print("Accuray Score :" + str(res_accuracy))
+# f1 score
+res_f1score = f1_score(y_test, y_pred)
+print("F1 Score :" + str(res_f1score))
+
+res_recall = recall_score(y_test, y_pred)
+print("recall Score :" + str(res_recall))
